@@ -1,24 +1,24 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+require("dotenv").config();
 
-const mongoURL = 'mongodb://localhost:27017/curd'
+// const mongoURL = process.env.mongoDB_URL_LOCAL;
+const mongoURL = process.env.mongoDB_URL;
+mongoose.connect(mongoURL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+const db = mongoose.connection;
 
-mongoose.connect(mongoURL,{
-    useNewUrlParser:true,
-    useUnifiedTopology:true
-})
-
-const db =mongoose.connection;
-
-db.on('connected', ()=>{
-    console.log('Connected to MongoDB');
+db.on("connected", () => {
+  console.log("Connected to MongoDB");
 });
 
-db.on('error', (err)=>{
-    console.error('MongoDB connection error:', err);
+db.on("error", (err) => {
+  console.error("MongoDB connection error:", err);
 });
 
-db.on('disconnected', ()=>{
-    console.log('MongoDB Connected');
+db.on("disconnected", () => {
+  console.log("MongoDB Connected");
 });
 
 module.exports = db;
