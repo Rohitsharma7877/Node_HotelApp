@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const MenuItem = require("../models/MenuItem.models");
 
+
+
+
 router.get("/", async (req, res) => {
   try {
     const data = await MenuItem.find();
@@ -64,5 +67,28 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+
+router.get("/:menuType", async (req, res) => {
+  try {
+    const menuType = req.params.menuType;
+    if (
+      menuType == "sweet" ||
+      menuType == "spicy" ||
+      menuType == "sour" 
+    ) {
+      const response = await MenuItem.find({ taste: menuType });
+      console.log("response data");
+      res.status(200).json(response);
+    } else {
+      res.status(404).json({ error: "invalid work" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
 
 module.exports = router;
